@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Comics extends Literature implements Printed {
+public class Comics extends Literature implements Printed, Presentable {
     private int number;
     private Date date;
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");

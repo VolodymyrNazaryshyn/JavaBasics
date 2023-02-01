@@ -21,6 +21,7 @@ public class App { // Классы именуются CapitalCamelCase
         library.add( new Newspaper( LocalDate.of(2021, 4, 20), "The Evening Standard")) ;
         try {
             library.add(new Comics("Marvel", 1, "13.09.2022"));
+            library.add(new Hologram("Acoustic holography", "07.11.2020"));
         } catch (ParseException ignored) {
             System.err.println("Date parse error");
         }
@@ -30,6 +31,8 @@ public class App { // Классы именуются CapitalCamelCase
         library.showPrinted();
         System.out.println("------------------------------------");
         library.playAll();
+        System.out.println("-----------------------------------------");
+        library.showPresentable();
     }
 
     public static void hello( String[] args ) { // методы и переменные именуются loverCamelCase
