@@ -1,10 +1,7 @@
 package itstep.learning;
 
-import itstep.learning.oop.Book;
-import itstep.learning.oop.Journal;
-import itstep.learning.oop.Library;
-import itstep.learning.oop.Newspaper;
-
+import itstep.learning.oop.*;
+import java.text.ParseException;
 import java.util.Scanner ;
 import java.time.LocalDate;
 
@@ -22,8 +19,17 @@ public class App { // Классы именуются CapitalCamelCase
         library.add( new Journal( 5, "Nature") ) ;                   // Одного интерфейса (Literature)
         library.add( new Newspaper( LocalDate.of(2017, 1, 13), "The Daily Telegraph")) ;
         library.add( new Newspaper( LocalDate.of(2021, 4, 20), "The Evening Standard")) ;
-
+        try {
+            library.add(new Comics("Marvel", 1, "13.09.2022"));
+        } catch (ParseException ignored) {
+            System.err.println("Date parse error");
+        }
+        library.add(new AudioBook("Kobzar. Shevchenko", "SuperSound Studio"));
         library.printFunds() ;
+        System.out.println("------------------------------------");
+        library.showPrinted();
+        System.out.println("------------------------------------");
+        library.playAll();
     }
 
     public static void hello( String[] args ) { // методы и переменные именуются loverCamelCase
@@ -104,4 +110,11 @@ Edit Configuration --> + --> Application [ name: App, main class: App ]
 - В одном файле может быть только один public класс, один класс на несколько файлов не разбивается
 - Название файла соответствует названию класса (+.java) с учетом регистра
 - Названия пакетов - названия папок (традиция - малыми буквами)
+ */
+/*
+Интерфейсы:
+- Добавить класс Hologram:Literature (+дата записи)
+- Создать интерфейс Presentable (выставочный) - маркер (без методов)
+- Добавить реализацию к Comics к Hologram
+- к App добавить вывод всех выставочных фондов
  */

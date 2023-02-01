@@ -1,6 +1,6 @@
 package itstep.learning.oop;
 
-public class Journal extends Literature {
+public class Journal extends Literature implements Printed {
     private int number ;
 
     public Journal(int number, String title) {

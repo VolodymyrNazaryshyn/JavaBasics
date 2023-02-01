@@ -1,6 +1,6 @@
 package itstep.learning.oop;
 
-public class Book extends Literature {
+public class Book extends Literature implements Printed {
     private String author ;
 
     public Book(String author, String title) {

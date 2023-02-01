@@ -23,6 +23,22 @@ public class Library {
             }
         }
     }
+
+    public void showPrinted() {
+        for( Literature literature : funds ) {
+            if( literature instanceof Printed ) {
+                System.out.println(literature.toString());
+            }
+        }
+    }
+
+    public void playAll() {
+        for( Literature literature : funds ) {
+            if( literature instanceof Playable ) {
+                ((Playable) literature).play();
+            }
+        }
+    }
 }
 /* ООП - Объекты + взаиможействие
  - Инкапсуляция
