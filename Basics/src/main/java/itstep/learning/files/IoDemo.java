@@ -1,8 +1,5 @@
 package itstep.learning.files;
-
 import itstep.learning.ConsoleColors;
-
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +37,74 @@ public class IoDemo {
             catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
+            System.out.println(ConsoleColors.YELLOW + "File created" + ConsoleColors.RESET);
+        }
+    }
+
+    /**
+     * Метод получения псевдослучайного целого числа от min до max (включая max)
+     */
+    private static int random(int min, int max) {
+        max -= min;
+        return (int) (Math.random() * ++max) + min;
+    }
+
+    public void generateFile() {
+        String fileName = "randomResult.txt";
+        Path filePath = Paths.get(fileName);
+
+        if(Files.exists(filePath)) {
+            try(InputStream inputStream = Files.newInputStream(filePath)) {
+                StringBuilder sb = new StringBuilder();
+                int code;
+                while(( code = inputStream.read() ) != -1) sb.append((char) code);
+
+                System.out.println(ConsoleColors.YELLOW + "File content:" + ConsoleColors.RESET);
+                System.out.println(ConsoleColors.CYAN + sb.toString() + ConsoleColors.RESET);
+            }
+            catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        else {
+            final int randomNumberOfRows = random(5, 30);
+            int[] lengthsOfRows = new int[randomNumberOfRows];
+            String[] stringsArray = new String[randomNumberOfRows];
+
+            try(FileWriter writer = new FileWriter(fileName)) {
+                for (int i = 0; i < randomNumberOfRows; ++i) {
+                    final int randomLengthOfRow = random(1, 80);
+                    lengthsOfRows[i] = randomLengthOfRow;
+                    StringBuilder sb = new StringBuilder();
+
+                    for (int j = 0; j < randomLengthOfRow; ++j) {
+                        char randomChar = (char)('A'+ Math.random()*27);
+                        sb.append(randomChar);
+                    }
+
+                    stringsArray[i] = sb.toString();
+                    writer.write(i + 1 + ". " + stringsArray[i] + " (Length: " + randomLengthOfRow + ")\n");
+                }
+
+                int maxLengthOfRow = lengthsOfRows[0]; // Предположим, что нулевой элемент максимальный
+                int numberOfRow = 0;
+
+                // В цикле начинаем с первой ячейки
+                for (int i = 1; i < lengthsOfRows.length; i++) {
+                    if (lengthsOfRows[i] > maxLengthOfRow) {
+                        numberOfRow = i;
+                        maxLengthOfRow = lengthsOfRows[i];
+                    }
+                }
+
+                writer.write("\nThe longest string in this file\nRow number: " + (numberOfRow + 1) +
+                        "\nRow length: " + maxLengthOfRow + "\nString: " + stringsArray[numberOfRow]);
+                writer.flush();
+            }
+            catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+
             System.out.println(ConsoleColors.YELLOW + "File created" + ConsoleColors.RESET);
         }
     }

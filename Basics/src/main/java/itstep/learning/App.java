@@ -13,8 +13,9 @@ import java.time.LocalDate;
  */
 public class App { // Классы именуются CapitalCamelCase
     public static void main( String[] args ) {
-        new IoDemo().run();
-        new DirDemo().run();
+        new IoDemo().generateFile();
+        // new IoDemo().run();
+        // new DirDemo().run();
     }
 
     public static void oop( String[] args ) {
