@@ -1,5 +1,6 @@
 package itstep.learning;
 
+import itstep.learning.db.DbDemo;
 import itstep.learning.files.DirDemo;
 import itstep.learning.files.IoDemo;
 import itstep.learning.oop.*;
@@ -13,7 +14,8 @@ import java.time.LocalDate;
  */
 public class App { // Классы именуются CapitalCamelCase
     public static void main( String[] args ) {
-        new IoDemo().generateFile();
+        new DbDemo().run();
+        // new IoDemo().generateFile();
         // new IoDemo().run();
         // new DirDemo().run();
     }
