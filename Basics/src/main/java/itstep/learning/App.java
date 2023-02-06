@@ -1,20 +1,23 @@
 package itstep.learning;
 
+import com.google.inject.Guice;
 import itstep.learning.db.DbDemo;
 import itstep.learning.files.DirDemo;
 import itstep.learning.files.IoDemo;
+import itstep.learning.ioc.AppModule;
+import itstep.learning.ioc.Starter;
 import itstep.learning.oop.*;
 import java.text.ParseException;
 import java.util.Scanner ;
 import java.time.LocalDate;
 
-/**
- * Hello world!
- *
- */
 public class App { // Классы именуются CapitalCamelCase
     public static void main( String[] args ) {
-        new DbDemo().run();
+        Guice
+                .createInjector(new AppModule())
+                .getInstance(Starter.class)
+                .run();
+        // new DbDemo().run();
         // new IoDemo().generateFile();
         // new IoDemo().run();
         // new DirDemo().run();
