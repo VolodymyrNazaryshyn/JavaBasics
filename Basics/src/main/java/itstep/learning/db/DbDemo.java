@@ -2,6 +2,7 @@ package itstep.learning.db;
 
 import java.sql.*;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Демонстрация работы с базами данных
@@ -45,7 +46,7 @@ public class DbDemo {
 
         Random random = new Random();
         //                            параметры: 1 2
-        sql = "INSERT INTO rands VALUES (UUID(), ?, ?)"; // подготовленный запрос - с параметрами
+        /*sql = "INSERT INTO rands VALUES (UUID(), ?, ?)"; // подготовленный запрос - с параметрами
         try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             // на место первого "?" ставим число
             preparedStatement.setInt(1, random.nextInt(1000)); // !! отсчет параметров начинается с 1 (не с 0)
@@ -58,7 +59,7 @@ public class DbDemo {
             System.err.println("INSERT error: " + ex.getMessage());
             return;
         }
-        System.out.println("INSERT OK");
+        System.out.println("INSERT OK");*/
 
         // запросы с возвратом результата
         sql = "SELECT id, num, str FROM rands";
@@ -73,10 +74,54 @@ public class DbDemo {
             System.err.println("SELECT error: " + ex.getMessage());
             return;
         }
+
+        System.out.println("------------------------------------------------------------------");
+
         // задание: использовать параметрический запрос в который передается число, а в выборку
         //  попадают только те данные, у которых num меньше этого числа
+        sql = "SELECT id, num, str FROM rands WHERE `num` < ?";
+
+        Scanner scanner = new Scanner(System.in);
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            System.out.print("Enter your number: ");
+            int num = scanner.nextInt();
+            preparedStatement.setInt(1, num);
+            ResultSet res = preparedStatement.executeQuery();
+
+            while(res.next()) {
+                System.out.println(res.getString(1) + " " + res.getInt(2) + " " + res.getString(3));
+            }
+
+            res.close();
+        }
+        catch (SQLException ex) {
+            System.err.print("SELECT prepared number statement error: " + ex.getMessage());
+            return;
+        }
+
+        System.out.println("------------------------------------------------------------------");
+
         // Д.З. то же самое, но в запрос передается строка, а выборка должна содержать введенную строку
         //  как подстроку в поле str (поисковый режим). Саму строку запросить у пользователя в консоли
+        sql = "SELECT id, num, str FROM rands WHERE `str` LIKE ?";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            System.out.println("Enter your string: ");
+            String strPattern = scanner.next();
+            preparedStatement.setString(1, "%" + strPattern + "%");
+            ResultSet res = preparedStatement.executeQuery();
+
+            while(res.next()) {
+                System.out.println(res.getString(1) + " " + res.getInt(2) + " " + res.getString(3));
+            }
+            res.close();
+        }
+        catch (SQLException ex) {
+            System.err.println("SELECT prepared string statement error: " + ex.getMessage());
+            return;
+        }
     }
 }
 /*
