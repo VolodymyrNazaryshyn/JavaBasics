@@ -19,6 +19,8 @@ public class Starter {
 
     @Inject CtrDemo ctrDemo;
 
+    @Inject private IConfig config;
+
     public void run() {
         System.out.println("DI demo");
         service1.show();
@@ -31,6 +33,11 @@ public class Starter {
         System.out.println(myCs);
         System.out.println(oraCs);
         ctrDemo.show();
+
+        String value1 = config.getParameter("Key1");
+        String value2 = config.getParameter("Key2");
+        System.out.println("---------------------------");
+        System.out.println(value1 + "\n" + value2);
     }
 
 }
