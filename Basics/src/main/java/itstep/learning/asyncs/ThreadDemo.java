@@ -1,5 +1,7 @@
 package itstep.learning.asyncs;
 
+import java.util.Date;
+
 public class ThreadDemo {
     private Runnable runnable1;
     private Runnable runnable2;
@@ -29,6 +31,7 @@ public class ThreadDemo {
             }
             System.out.println("runnable2 finish");
         };
+
         Runnable runnable3 = () -> {
             System.out.println("runnable3 start");
             long w = 0;
@@ -43,6 +46,8 @@ public class ThreadDemo {
             }
             System.out.println("runnable3 finish");
         };
+
+        /*
         Thread thread3 = new Thread(runnable3);
         thread3.start();
         Thread thread2 = new Thread(runnable2);
@@ -56,6 +61,7 @@ public class ThreadDemo {
         thread3.interrupt(); // в теле потока 3 нет sleep, в нем будет установлен isInterrupted() состояние которого постоянно проверяется
         thread2.join(); // ожидание завершения потока (вызывающий поток блокируется)
         System.out.println("Thread Demo finish");
+        */
         /*
         for(i) {
             new Thread(()->{...}).start(); // несколько операций new ()->{...}
@@ -65,6 +71,40 @@ public class ThreadDemo {
             new Thread(runnable2).start();
         }
         */
+
+        Runnable runnable4 = () -> {
+            System.out.println("Start preparing tea. Start time: [" + new Date().getSeconds() + "]");
+            try {
+                Thread.sleep(3000);
+            }
+            catch (Exception ex) {
+                System.out.println("Thread4 interrupted " + ex.getMessage());
+            }
+            System.out.println("End preparing tea. End time: [" + new Date().getSeconds() + "]");
+        };
+
+        Runnable runnable5 = () -> {
+            System.out.println("Start preparing toasts and eggs. Start time: [" + new Date().getSeconds() + "]");
+            try {
+                Thread.sleep(2000);
+                System.out.println("End frying eggs. End time: [" + new Date().getSeconds() + "]");
+                Thread.sleep(1000);
+                System.out.println("End preparing toast. End time: [" + new Date().getSeconds() + "]");
+            }
+            catch (Exception ex) {
+                System.out.println("Thread5 interrupted " + ex.getMessage());
+            }
+            System.out.println("End cooking. End time: [" + new Date().getSeconds() + "]");
+        };
+
+        Thread thread4 = new Thread(runnable4);
+        thread4.start();
+
+        Thread thread5 = new Thread(runnable5);
+        thread5.start();
+
+        thread4.join();
+        thread5.join();
     }
 
     static class ParamThread extends Thread { // передача параметров в поток обычно реализуется
