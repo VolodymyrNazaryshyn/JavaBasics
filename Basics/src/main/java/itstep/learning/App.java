@@ -1,6 +1,7 @@
 package itstep.learning;
 
 import com.google.inject.Guice;
+import itstep.learning.asyncs.SyncDemo;
 import itstep.learning.asyncs.ThreadDemo;
 import itstep.learning.db.DbDemo;
 import itstep.learning.files.DirDemo;
@@ -14,7 +15,8 @@ import java.time.LocalDate;
 
 public class App { // Классы именуются CapitalCamelCase
     public static void main( String[] args ) throws InterruptedException {
-        new ThreadDemo().run();
+        new SyncDemo().run();
+        //new ThreadDemo().run();
         //Guice
         //        .createInjector(new AppModule())
         //        .getInstance(Starter.class)
