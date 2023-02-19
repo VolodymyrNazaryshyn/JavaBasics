@@ -7,13 +7,14 @@ public class SyncDemo {
     private long time1;
     private long time2;
     public void run() {
-        random = new Random();
-        sum = 100;
-        activeThreads = 12;
+        // random = new Random();
+        // sum = 100;
+        // activeThreads = 12;
         time1 = System.nanoTime();
-        for(int i = 0; i < 12; ++i) {
-            new Thread(this::plusPercent2).start();
-        }
+        // for(int i = 0; i < 12; ++i) {
+        //     new Thread(this::plusPercent2).start();
+        // }
+        quadraticEquation(3,7,-10);
     }
     private double sum;
     private Integer activeThreads;
@@ -60,10 +61,65 @@ public class SyncDemo {
             if(activeThreads == 0) onFinish();
         }
     }
-
     private void onFinish() { // должен запуститься после всех потоков (после последнего)
         time2 = System.nanoTime();
-        System.out.println( (time2 - time1) / 1e9 );
+        System.out.println("Time: " + (time2 - time1) / 1e9 );
+    }
+    /*************************************/
+    private final Object quadraticEquationLocker = new Object();
+    private final Object timerLocker = new Object();
+    private int rootCount = 2;
+
+    private void quadraticEquation(int a, int b, int c) {
+        System.out.println("Quadratic equation: " + a + "x^2+" + b + "x" + c + "=0");
+
+        int D = (b * b) - (4 * a * c);
+        System.out.println("D: " + D);
+
+        Runnable positiveRoot = () -> {
+            double root1, x1;
+            if (D >= 0) {
+                synchronized(quadraticEquationLocker) {
+                    root1 = root1(b, D, a);
+                    x1 = root1;
+                }
+                System.out.println("x1: " + x1);
+            }
+            else {
+                System.out.println("Doesn't exist");
+            }
+            synchronized (timerLocker) {
+                rootCount -= 1;
+                if(rootCount == 0) onFinish();
+            }
+        };
+
+        Runnable negativeRoot = () -> {
+            double root2, x2;
+            if (D >= 0) {
+                synchronized(quadraticEquationLocker) {
+                    root2 = root2(b, D, a);
+                    x2 = root2;
+                }
+                System.out.println("x2: " + x2);
+            }
+            else {
+                System.out.println("Doesn't exist");
+            }
+            synchronized (timerLocker) {
+                rootCount -= 1;
+                if(rootCount == 0) onFinish();
+            }
+        };
+
+        new Thread(positiveRoot).start();
+        new Thread(negativeRoot).start();
+    }
+    private double root1(double b, double D, double a) {
+        return ( -b - Math.sqrt(D) ) / (2 * a);
+    }
+    private double root2(double b, double D, double a) {
+        return ( -b + Math.sqrt(D) ) / (2 * a);
     }
 }
 /*
